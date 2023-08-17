@@ -1,19 +1,46 @@
 <script setup>
 import {ref, reactive} from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+import ButtonComponent from './components/ButtonComponent.vue';
+import SlotComponent from './components/SlotComponent.vue';
+const msg = ref("Hello World")
+function clickHandlerOne() {
+  msg.value = "Click One"
+}
+
+function clickHandlerTwo() {
+  msg.value = "Click Two"
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
+  <h2 class="text-2xl my-10">Slot</h2>
+  <p class="my-5">
+    {{ msg }}
+  </p>
+  <p>
+    <ButtonComponent :clickHandler="clickHandlerOne">
+      <em>Button One</em>
+    </ButtonComponent>
 
-  <HelloWorld msg="Vite + Vue" />
+  </p>
+  <p class="my-5">
+    <!-- <ButtonComponent label="Button Two" :clickHandler="clickHandlerTwo"/> -->
+    <ButtonComponent :clickHandler="clickHandlerTwo">
+      Button Two
+    </ButtonComponent>
+  </p>
+
+  <SlotComponent>
+    Default Content 123      
+    <template v-slot:footer>
+      <h2 class="text-xl my-10">This is footer</h2>  
+    </template>
+    <template #header>
+      <h2 class="text-2xl my-10">This is Heading</h2>  
+    </template>
+    
+  </SlotComponent>
 </template>
 
 <style scoped>
