@@ -1,46 +1,32 @@
 <script setup>
-import {ref, reactive} from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
-import ButtonComponent from './components/ButtonComponent.vue';
-import SlotComponent from './components/SlotComponent.vue';
+import {ref, reactive, provide} from 'vue'
+import ParentComponent from './components/ParentComponent.vue'
+import { ydata } from './data/ydata';
 const msg = ref("Hello World")
-function clickHandlerOne() {
-  msg.value = "Click One"
-}
+const data = reactive({
+  message:"Hello World",
+  count:2,
+  increase(){
+    this.count++
+  },
+  decrease(){
+    this.count--
+  }
+})
 
-function clickHandlerTwo() {
-  msg.value = "Click Two"
-}
+provide('mydata', data)
+provide("message",msg) //register data to be available to all child components
 </script>
 
 <template>
-  <h2 class="text-2xl my-10">Slot</h2>
-  <p class="my-5">
-    {{ msg }}
+  <h2 class="my-10 text-2xl">Prop Drilling</h2>
+  <p class="text-red-500 my-10">
+    {{ data.message }} | {{ data.count }}
   </p>
-  <p>
-    <ButtonComponent :clickHandler="clickHandlerOne">
-      <em>Button One</em>
-    </ButtonComponent>
-
+  <p class="text-red-500 my-10">
+    Ydata {{ ydata.message }} | {{ ydata.count }}
   </p>
-  <p class="my-5">
-    <!-- <ButtonComponent label="Button Two" :clickHandler="clickHandlerTwo"/> -->
-    <ButtonComponent :clickHandler="clickHandlerTwo">
-      Button Two
-    </ButtonComponent>
-  </p>
-
-  <SlotComponent>
-    Default Content 123      
-    <template v-slot:footer>
-      <h2 class="text-xl my-10">This is footer</h2>  
-    </template>
-    <template #header>
-      <h2 class="text-2xl my-10">This is Heading</h2>  
-    </template>
-    
-  </SlotComponent>
+  <ParentComponent />
 </template>
 
 <style scoped>
